@@ -1,6 +1,8 @@
 package com.user.main.service;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.user.main.entity.Contact;
@@ -33,6 +35,17 @@ public class ContactServiceImpl implements ContactService {
 
 		Example<Contact> example = Example.of(contact);
 		return contactRepo.exists(example);
+	}
+
+	@Override
+	public Page<Contact> getAllContactNew(Integer pageNo, Integer pageSize) {
+
+		Contact contactFilter = new Contact();
+		contactFilter.setActivesw("Y");
+		Example<Contact> example = Example.of(contactFilter);
+		PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+		return contactRepo.findAll(example, pageRequest);
+
 	}
 
 }

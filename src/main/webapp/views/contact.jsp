@@ -44,7 +44,7 @@
 	
 	</form:form>
 
-
+	<a href="viewContacts?pno=1">ViewAllContacts</a>
 
 </body>
 </html>

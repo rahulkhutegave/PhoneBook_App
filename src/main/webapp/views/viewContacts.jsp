@@ -52,6 +52,24 @@
 		</tbody>
 	</table>
 
+	<c:if test="${currPno >1 }">
+		<a href="viewContacts?pno=${currPno-1 }">Previous</a>
+	</c:if>
+
+	<c:forEach begin="1" end="${tp }" var="pageNo">
+
+		<c:choose>
+			<c:when test="${currPno==pageNo }">
+					${pageNo }
+				</c:when>
+			<c:otherwise>
+				<a href="viewContacts?pno=${pageNo }">${pageNo }</a>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+	<c:if test="${currPno < tp }">
+		<a href="viewContacts?pno=${currPno+1 }">Next</a>
+	</c:if>
 
 
 </body>

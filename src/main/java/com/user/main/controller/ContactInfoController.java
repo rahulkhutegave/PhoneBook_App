@@ -1,9 +1,15 @@
 package com.user.main.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.user.main.entity.Contact;
 import com.user.main.service.ContactService;
@@ -42,6 +48,37 @@ public class ContactInfoController {
 		}
 
 		return "contact";
+	}
+	
+	@GetMapping("/viewContacts")
+	public ModelAndView handleViewAllContactsClick(HttpServletRequest req) {
+		
+		ModelAndView mav=new ModelAndView();
+		
+		Integer pageSize=3;
+		
+		Integer pageNumber=1;
+		
+		String parameter = req.getParameter("pno");
+		
+		if(!"".equals(parameter) && parameter!=null) {
+			 pageNumber = Integer.parseInt(parameter);
+		}
+		
+		Page<Contact> page = contactService.getAllContactNew(pageNumber-1, pageSize);
+		
+		List<Contact> allContacts = page.getContent();
+		
+		int tp = page.getTotalPages();
+		
+		mav.addObject("tp", tp);
+		mav.addObject("contacts", allContacts);
+		
+		mav.addObject("currPno", pageNumber);
+		mav.setViewName("viewContacts");
+		
+		
+		return mav;
 	}
 
 }
