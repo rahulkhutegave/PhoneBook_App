@@ -1,5 +1,7 @@
 package com.user.main.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,31 @@ public class ContactServiceImpl implements ContactService {
 		PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
 		return contactRepo.findAll(example, pageRequest);
 
+	}
+
+	@Override
+	public Contact getContactById(Integer contactId) {
+
+		Optional<Contact> findById = contactRepo.findById(contactId);
+		if (findById.isPresent()) {
+			return findById.get();
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean deleteContactById(Integer contactId) {
+		//Soft Delete		
+		Optional<Contact> findById = contactRepo.findById(contactId);
+		if (findById.isPresent()) {
+			Contact contact = findById.get();
+			contact.setActivesw("N");
+			contactRepo.save(contact);
+			return true;
+		}
+
+		return false;
 	}
 
 }
